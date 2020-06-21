@@ -24,7 +24,9 @@ public class PostReactionService {
             } else {
                 react.setIsLike(postReactionDto.getIsLike());
                 var result = postReactionsRepository.save(react);
-                return Optional.of(PostReactionMapper.MAPPER.reactionToPostReactionDto(result));
+                var responseDto = PostReactionMapper.MAPPER.reactionToPostReactionDto(result);
+                responseDto.setIsLikeChanged(true);
+                return Optional.of(responseDto);
             }
         } else {
             var postReaction = PostReactionMapper.MAPPER.dtoToPostReaction(postReactionDto);

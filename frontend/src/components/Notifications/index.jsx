@@ -23,6 +23,10 @@ const Notifications = ({ user, applyPost }) => {
         NotificationManager.info('Your post was liked!');
       });
 
+      stompClient.subscribe('/topic/dislike', () => {
+        NotificationManager.warning('Your post was disliked!');
+      });
+
       stompClient.subscribe('/topic/new_post', message => {
         const post = JSON.parse(message.body);
         if (post.userId !== id) {
