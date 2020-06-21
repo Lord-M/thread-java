@@ -8,5 +8,6 @@ public class ResponsePostReactionDto {
     private UUID id;
     private UUID postId;
     private Boolean isLike;
+    private Boolean isLikeChanged;
     private UUID userId;
 }
