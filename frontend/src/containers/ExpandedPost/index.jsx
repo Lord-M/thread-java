@@ -12,7 +12,13 @@ import Spinner from 'src/components/Spinner';
 
 const ExpandedPost = ({
   post,
+  userId,
   sharePost,
+  editPost: edit,
+  updatePost: update,
+  updatePostImage: updateImage,
+  cancelPostUpdate: cancelUpdate,
+  uploadImage: uploadImage,
   likePost: like,
   dislikePost: dislike,
   toggleExpandedPost: toggle,
@@ -24,6 +30,13 @@ const ExpandedPost = ({
         <Modal.Content>
           <Post
             post={post}
+            isEditable={post.user.id === userId}
+            inEdit={post.inEdit}
+            editPost={edit}
+            updatePost={(id, postUpdate) => update(postUpdate)}
+            updatePostImage={(id, image) => updateImage(image)}
+            cancelPostUpdate={cancelUpdate}
+            uploadImage={uploadImage}
             likePost={like}
             dislikePost={dislike}
             toggleExpandedPost={toggle}
@@ -46,6 +59,12 @@ const ExpandedPost = ({
 
 ExpandedPost.propTypes = {
   post: PropTypes.objectOf(PropTypes.any).isRequired,
+  userId: PropTypes.string.isRequired,
+  editPost: PropTypes.func.isRequired,
+  updatePost: PropTypes.func.isRequired,
+  updatePostImage: PropTypes.func.isRequired,
+  cancelPostUpdate: PropTypes.func.isRequired,
+  uploadImage: PropTypes.func.isRequired,
   toggleExpandedPost: PropTypes.func.isRequired,
   likePost: PropTypes.func.isRequired,
   dislikePost: PropTypes.func.isRequired,
@@ -54,7 +73,8 @@ ExpandedPost.propTypes = {
 };
 
 const mapStateToProps = rootState => ({
-  post: rootState.posts.expandedPost
+  post: rootState.posts.expandedPost,
+  userId: rootState.profile.user.id
 });
 
 const actions = { likePost, dislikePost, toggleExpandedPost, addComment };

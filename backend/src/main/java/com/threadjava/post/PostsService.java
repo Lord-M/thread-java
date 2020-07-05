@@ -41,8 +41,14 @@ public class PostsService {
     }
 
     public PostCreationResponseDto create(PostCreationDto postDto) {
-        Post post = PostMapper.MAPPER.postDetailsDtoToPost(postDto);
+        Post post = PostMapper.MAPPER.postCreationDtoToPost(postDto);
         Post postCreated = postsCrudRepository.save(post);
         return PostMapper.MAPPER.postToPostCreationResponseDto(postCreated);
+    }
+
+    public PostUpdateDto update(PostUpdateDto postDto) {
+        Post post = PostMapper.MAPPER.postUpdateDtoToPost(postDto);
+        Post postUpdated = postsCrudRepository.save(post);
+        return PostMapper.MAPPER.postToPostUpdateDto(postUpdated);
     }
 }

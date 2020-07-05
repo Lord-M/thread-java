@@ -26,11 +26,15 @@ public abstract class PostMapper {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "comments", ignore = true)
     @Mapping(target = "reactions", ignore = true)
-    public abstract Post postDetailsDtoToPost(PostCreationDto postDetailsDto);
+    public abstract Post postCreationDtoToPost(PostCreationDto postCreationDto);
+
+    public abstract Post postUpdateDtoToPost(PostUpdateDto postUpdateDto);
+
+    public abstract PostUpdateDto postToPostUpdateDto(Post post);
 
     @AfterMapping
     public Post doAfterMapping(@MappingTarget Post entity) {
-        if (entity != null && entity.getImage().getId() == null) {
+        if (entity != null && entity.getImage() != null && entity.getImage().getId() == null) {
             entity.setImage(null);
         }
         return entity;
