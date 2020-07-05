@@ -1,0 +1,36 @@
+.imageWrapper {
+  margin-bottom: 10px
+}
+
+:global(.ui.image).image {
+  width: auto;
+  max-width: 150px;
+  max-height: 150px;
+}
+
+.textAreaContainer {
+  margin-bottom: 0.5em;
+}
+
+.buttonsContainer {
+  display: inline-block;
+}
+
+.buttonsContainerRight {
+  @extend .buttonsContainer;
+  float: right;
+}
+
+.buttonsContainerRoot {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+
+  div {
+    margin-top: 0.25em;
+  }
+
+  div:first-child {
+    margin-top: inherit;
+  }
+}

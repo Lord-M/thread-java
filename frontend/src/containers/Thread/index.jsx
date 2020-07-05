@@ -10,7 +10,22 @@ import AddPost from 'src/components/AddPost';
 import SharedPostLink from 'src/components/SharedPostLink';
 import { Checkbox, Loader } from 'semantic-ui-react';
 import InfiniteScroll from 'react-infinite-scroller';
-import { loadPosts, loadMorePosts, likePost, dislikePost, toggleExpandedPost, addPost } from './actions';
+import {
+  loadPosts,
+  loadMorePosts,
+  likePost,
+  dislikePost,
+  editPost,
+  editExpandedPost,
+  updatePost,
+  updateExpandedPost,
+  updatePostImage,
+  updateExpandedPostImage,
+  cancelPostUpdate,
+  cancelExpandedPostUpdate,
+  toggleExpandedPost,
+  addPost
+} from './actions';
 
 import styles from './styles.module.scss';
 
@@ -28,6 +43,14 @@ const Thread = ({
   expandedPost,
   hasMorePosts,
   addPost: createPost,
+  editPost: edit,
+  editExpandedPost: editExpandedPost,
+  updatePost: update,
+  updateExpandedPost: updateExpandedPost,
+  updatePostImage: updateImage,
+  updateExpandedPostImage: updateExpandedPostImage,
+  cancelPostUpdate: cancelUpdate,
+  cancelExpandedPostUpdate: cancelExpandedPostUpdate,
   likePost: like,
   dislikePost: dislike,
   toggleExpandedPost: toggle
@@ -77,6 +100,13 @@ const Thread = ({
         {posts.map(post => (
           <Post
             post={post}
+            isEditable={post.user.id === userId}
+            inEdit={post.inEdit}
+            editPost={edit}
+            updatePost={update}
+            updatePostImage={updateImage}
+            cancelPostUpdate={cancelUpdate}
+            uploadImage={uploadImage}
             likePost={like}
             dislikePost={dislike}
             toggleExpandedPost={toggle}
@@ -85,7 +115,16 @@ const Thread = ({
           />
         ))}
       </InfiniteScroll>
-      {expandedPost && <ExpandedPost sharePost={sharePost} />}
+      {expandedPost && (
+        <ExpandedPost
+          sharePost={sharePost}
+          editPost={editExpandedPost}
+          updatePost={updateExpandedPost}
+          updatePostImage={updateExpandedPostImage}
+          cancelPostUpdate={cancelExpandedPostUpdate}
+          uploadImage={uploadImage}
+        />
+      )}
       {sharedPostId && <SharedPostLink postId={sharedPostId} close={() => setSharedPostId(undefined)} />}
     </div>
   );
@@ -101,7 +140,15 @@ Thread.propTypes = {
   likePost: PropTypes.func.isRequired,
   dislikePost: PropTypes.func.isRequired,
   toggleExpandedPost: PropTypes.func.isRequired,
-  addPost: PropTypes.func.isRequired
+  addPost: PropTypes.func.isRequired,
+  editPost: PropTypes.func.isRequired,
+  editExpandedPost: PropTypes.func.isRequired,
+  updatePost: PropTypes.func.isRequired,
+  updateExpandedPost: PropTypes.func.isRequired,
+  updatePostImage: PropTypes.func.isRequired,
+  updateExpandedPostImage: PropTypes.func.isRequired,
+  cancelPostUpdate: PropTypes.func.isRequired,
+  cancelExpandedPostUpdate: PropTypes.func.isRequired
 };
 
 Thread.defaultProps = {
@@ -123,6 +170,15 @@ const actions = {
   loadMorePosts,
   likePost,
   dislikePost,
+  editPost,
+  editExpandedPost,
+  updatePost,
+  updateExpandedPost,
+  updateExpandedPostImage,
+  updatePostImage,
+  updateExpandedPostImage,
+  cancelPostUpdate,
+  cancelExpandedPostUpdate,
   toggleExpandedPost,
   addPost
 };

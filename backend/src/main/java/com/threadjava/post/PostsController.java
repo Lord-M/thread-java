@@ -38,4 +38,11 @@ public class PostsController {
         template.convertAndSend("/topic/new_post", item);
         return item;
     }
+
+    @PutMapping
+    public PostUpdateDto put(@RequestBody PostUpdateDto postDto) {
+        var item = postsService.update(postDto);
+        template.convertAndSend("/topic/updated_post", item);
+        return item;
+    }
 }

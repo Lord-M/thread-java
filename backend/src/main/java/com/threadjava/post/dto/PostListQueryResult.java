@@ -17,6 +17,7 @@ public class PostListQueryResult {
     public long dislikeCount;
     public long commentCount;
     public Date createdAt;
+    public Date updatedAt;
     public Image image;
     public User user;
 }

@@ -2,6 +2,14 @@ import * as postService from 'src/services/postService';
 import * as commentService from 'src/services/commentService';
 import {
   ADD_POST,
+  EDIT_POST,
+  EDIT_EXPANDED_POST,
+  UPDATE_POST,
+  UPDATE_EXPANDED_POST,
+  UPDATE_POST_IMAGE,
+  UPDATE_EXPANDED_POST_IMAGE,
+  CANCEL_POST_UPDATE,
+  CANCEL_EXPANDED_POST_UPDATE,
   LOAD_MORE_POSTS,
   SET_ALL_POSTS,
   SET_EXPANDED_POST
@@ -19,6 +27,48 @@ const addMorePostsAction = posts => ({
 
 const addPostAction = post => ({
   type: ADD_POST,
+  post
+});
+
+const editPostAction = post => ({
+  type: EDIT_POST,
+  post
+});
+
+const editExpandedPostAction = post => ({
+  type: EDIT_EXPANDED_POST,
+  post
+});
+
+const updatePostAction = (postId, postUpdate) => ({
+  type: UPDATE_POST,
+  postId,
+  postUpdate
+});
+
+const updateExpandedPostAction = (postUpdate) => ({
+  type: UPDATE_EXPANDED_POST,
+  postUpdate
+});
+
+const updatePostImageAction = (postId, image) => ({
+  type: UPDATE_POST_IMAGE,
+  postId,
+  image
+});
+
+const updateExpandedPostImageAction = (image) => ({
+  type: UPDATE_EXPANDED_POST_IMAGE,
+  image
+});
+
+const cancelPostUpdateAction = post => ({
+  type: CANCEL_POST_UPDATE,
+  post
+});
+
+const cancelExpandedPostUpdateAction = post => ({
+  type: CANCEL_EXPANDED_POST_UPDATE,
   post
 });
 
@@ -55,6 +105,52 @@ export const toggleExpandedPost = postId => async dispatch => {
   const post = postId ? await postService.getPost(postId) : undefined;
   dispatch(setExpandedPostAction(post));
 };
+
+export const editPost = post => async dispatch => {
+  dispatch(editPostAction(post));
+}
+
+export const editExpandedPost = post => async dispatch => {
+  dispatch(editExpandedPostAction(post));
+}
+
+export const updatePost = (postId, postUpdate) => async (dispatch, getRootState) => {
+  dispatch(updatePostAction(postId, postUpdate));
+
+  const rootState = getRootState();
+  const posts = rootState.posts.posts;
+
+  const updatedPost = posts.find(p => p.id === postId);
+  const result = await postService.updatePost(postId, updatedPost);
+  dispatch(updatePostAction(postId, result));
+}
+
+export const updateExpandedPost = (postUpdate) => async (dispatch, getRootState) => {
+  dispatch(updateExpandedPostAction(postUpdate));
+
+  const rootState = getRootState();
+  const expandedPost = rootState.posts.expandedPost;
+
+  const result = await postService.updatePost(expandedPost.id, expandedPost);
+  dispatch(updateExpandedPostAction(result));
+  dispatch(updatePostAction(result.id, result));
+}
+
+export const updatePostImage = (postId, image) => async dispatch => {
+  dispatch(updatePostImageAction(postId, image));
+}
+
+export const updateExpandedPostImage = image => async dispatch => {
+  dispatch(updateExpandedPostImageAction(image));
+}
+
+export const cancelPostUpdate = post => async dispatch => {
+  dispatch(cancelPostUpdateAction(post));
+}
+
+export const cancelExpandedPostUpdate = post => async dispatch => {
+  dispatch(cancelExpandedPostUpdateAction(post));
+}
 
 export const likePost = postId => async (dispatch, getRootState) => {
   const result = await postService.likePost(postId);
